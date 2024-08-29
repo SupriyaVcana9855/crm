@@ -1,0 +1,145 @@
+/////////////////////////////Duration////////////////////////////////  
+
+
+
+<td class="tdVertical">
+   <label id="startDateLabel" for="startDate">Start Date:</label>
+   </td>
+  <td class="tdData">
+  <input type="date" id="startDate" name="startDate" onblur="calculateDuration()">
+  </td>
+
+
+
+
+ <td class="tdVertical">
+                                <label id="startDateLabel" for="endDate">End Date:</label>
+                            </td>
+                            <td class="tdData">
+                             <input type="date" id="endDate" name="endDate" onblur="calculateDuration()">
+                            </td>
+
+
+
+
+
+                                        <td class="tdVertical">
+                <label id="durationLabel" for="duration">Duration:</label>
+            </td>
+            <td class="tdData">
+                <input type="text" id="duration" name="duration" style="width: 150px;" readonly>
+            </td>
+
+
+
+/////////////////////////////Pay Rate /////////////////////////////////////////
+
+
+
+
+
+<td class="tdVertical">
+                                 <label for="paydate">Enter Bill Rate</label>
+                            </td>
+                            <td class="tdData">
+                                        <input type="text" id="billRate" placeholder="Enter bill rate" />
+
+                            </td>
+
+
+ 
+
+  <td class="tdVertical">
+                                  <label id="maxRateLabel" for="maxRate">Pay Rate:</label>
+                            </td>
+                            <td class="tdData">
+                                <input type="text" tabindex="12" class="inputbox" id="maxRate" name="maxRate" style="width: 150px;" <?php if(isset($this->jobOrderSourceRS['maxRate'])): ?>value="<?php $this->_($this->jobOrderSourceRS['maxRate']); ?>"<?php endif; ?>/>
+                            </td>
+
+
+
+
+
+
+///////////////////////////script Duration and Pay rate //////////////////////////////
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+        function calculateDuration() {
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            if (startDate && endDate) {
+                var startDateObj = new Date(startDate);
+                var endDateObj = new Date(endDate);
+
+                // Calculate the difference in milliseconds
+                var timeDiff = endDateObj - startDateObj;
+
+                // Convert the difference to days
+                var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+                // Calculate the difference in months
+                var monthsDiff = (endDateObj.getFullYear() - startDateObj.getFullYear()) * 12 + (endDateObj.getMonth() - startDateObj.getMonth());
+
+                // Display the result
+                document.getElementById("duration").value = daysDiff + " days, " + monthsDiff + " months";
+            }
+        }
+    </script>
+    
+    
+         
+<script>
+    // Get the bill rate input element and the max rate input element
+    var billRateInput = document.getElementById("billRate");
+    var maxRateInput = document.getElementById("maxRate");
+
+    // Add an input event listener to the bill rate input
+    billRateInput.addEventListener("input", function () {
+        // Get the bill rate entered by the user
+        var billRate = parseFloat(billRateInput.value);
+
+        if (!isNaN(billRate)) {
+            // Calculate the pay rates based on the bill rate
+            var payRateC2C = (billRate * 0.8); // C2C rate calculation
+            var cost = billRate * 0.22;
+            var profitMargin = billRate * 0.1;
+            var payRateW2 = billRate - cost - profitMargin; // W2 rate calculation
+
+            // Update the max rate input with the calculated pay rates
+            maxRateInput.value = "C2C $" + payRateC2C.toFixed(2) + " / W2 $" + payRateW2.toFixed(2);
+        } else {
+            // Clear the max rate input if the bill rate is not a valid number
+            maxRateInput.value = "";
+        }
+    });
+</script>
+
+    
+    
+    
+    
+    
+<script>
+$(document).ready(function(){
+    $(".num").hide();
+    $(".numb").hide();
+  $("#c2c").click(function(){
+    $(".num").show();
+    $(".numb").hide();
+  });
+  $("#w2").click(function(){
+    $(".numb").show();
+    $(".num").hide();
+  });
+
+});
+</script>
