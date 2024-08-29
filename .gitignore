@@ -1,6 +1,2 @@
 node_modules/
-uploads/
-backups/
-temp/
-application/vendor/
 *.log
